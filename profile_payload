@@ -1,0 +1,7 @@
+ctest --parallel 1 --verbose --progress --timeout 120 || :
+make -j1 check V=1 VERBOSE=1 || :
+make -j1 tests V=1 VERBOSE=1 || :
+make -j1 test V=1 VERBOSE=1 || :
+ln -sf /builddir/build/BUILD/libebur128/test/*.wav .
+./r128-test-library || :
+./minimal-example *.wav || :
