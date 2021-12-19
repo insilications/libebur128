@@ -5,13 +5,14 @@
 %define keepstatic 1
 Name     : libebur128
 Version  : 1.2.6
-Release  : 211
+Release  : 212
 URL      : file:///aot/build/clearlinux/packages/libebur128/libebur128-v1.2.6.tar.gz
 Source0  : file:///aot/build/clearlinux/packages/libebur128/libebur128-v1.2.6.tar.gz
 Source1  : file:///aot/build/clearlinux/packages/libebur128/ebu-loudness-test-setv05.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0
+Requires: libebur128-lib = %{version}-%{release}
 BuildRequires : PyYAML
 BuildRequires : Pygments
 BuildRequires : Sphinx
@@ -123,6 +124,34 @@ libebur128
 libebur128 is a library that implements the EBU R 128 standard for loudness
 normalisation.
 
+%package dev
+Summary: dev components for the libebur128 package.
+Group: Development
+Requires: libebur128-lib = %{version}-%{release}
+Provides: libebur128-devel = %{version}-%{release}
+Requires: libebur128 = %{version}-%{release}
+
+%description dev
+dev components for the libebur128 package.
+
+
+%package lib
+Summary: lib components for the libebur128 package.
+Group: Libraries
+
+%description lib
+lib components for the libebur128 package.
+
+
+%package staticdev
+Summary: staticdev components for the libebur128 package.
+Group: Default
+Requires: libebur128-dev = %{version}-%{release}
+
+%description staticdev
+staticdev components for the libebur128 package.
+
+
 %prep
 %setup -q -n libebur128
 cd %{_builddir}
@@ -139,7 +168,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1639951977
+export SOURCE_DATE_EPOCH=1639952334
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -254,7 +283,9 @@ ctest --parallel 1 --verbose --progress --timeout 120 || :
 make -j1 check V=1 VERBOSE=1 || :
 make -j1 tests V=1 VERBOSE=1 || :
 make -j1 test V=1 VERBOSE=1 || :
-exit 1
+ln -sf /builddir/build/BUILD/libebur128/test/*.wav .
+./r128-test-library || :
+./minimal-example *.wav || :
 export LD_LIBRARY_PATH="/usr/nvidia/lib64:/usr/nvidia/lib64/vdpau:/usr/nvidia/lib64/xorg/modules/drivers:/usr/nvidia/lib64/xorg/modules/extensions:/usr/local/cuda/lib64:/usr/lib64/haswell:/usr/lib64/haswell/pulseaudio:/usr/lib64/haswell/alsa-lib:/usr/lib64/haswell/gstreamer-1.0:/usr/lib64/haswell/pipewire-0.3:/usr/lib64/haswell/spa-0.2:/usr/lib64/dri:/usr/lib64:/usr/lib64/pulseaudio:/usr/lib64/alsa-lib:/usr/lib64/gstreamer-1.0:/usr/lib64/pipewire-0.3:/usr/lib64/spa-0.2:/usr/lib:/aot/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin:/aot/intel/oneapi/compiler/latest/linux/lib:/aot/intel/oneapi/mkl/latest/lib/intel64:/aot/intel/oneapi/tbb/latest/lib/intel64/gcc4.8:/usr/share:/usr/lib64/wine:/usr/nvidia/lib32:/usr/nvidia/lib32/vdpau:/usr/lib32:/usr/lib32/wine"
 export LIBRARY_PATH="/usr/nvidia/lib64:/usr/nvidia/lib64/vdpau:/usr/nvidia/lib64/xorg/modules/drivers:/usr/nvidia/lib64/xorg/modules/extensions:/usr/local/cuda/lib64:/usr/lib64/haswell:/usr/lib64/haswell/pulseaudio:/usr/lib64/haswell/alsa-lib:/usr/lib64/haswell/gstreamer-1.0:/usr/lib64/haswell/pipewire-0.3:/usr/lib64/haswell/spa-0.2:/usr/lib64/dri:/usr/lib64:/usr/lib64/pulseaudio:/usr/lib64/alsa-lib:/usr/lib64/gstreamer-1.0:/usr/lib64/pipewire-0.3:/usr/lib64/spa-0.2:/usr/lib:/aot/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin:/aot/intel/oneapi/compiler/latest/linux/lib:/aot/intel/oneapi/mkl/latest/lib/intel64:/aot/intel/oneapi/tbb/latest/lib/intel64/gcc4.8:/usr/share:/usr/lib64/wine:/usr/nvidia/lib32:/usr/nvidia/lib32/vdpau:/usr/lib32:/usr/lib32/wine"
 ## profile_payload end
@@ -389,7 +420,9 @@ ctest --parallel 1 --verbose --progress --timeout 120 || :
 make -j1 check V=1 VERBOSE=1 || :
 make -j1 tests V=1 VERBOSE=1 || :
 make -j1 test V=1 VERBOSE=1 || :
-exit 1
+ln -sf /builddir/build/BUILD/libebur128/test/*.wav .
+./r128-test-library || :
+./minimal-example *.wav || :
 export LD_LIBRARY_PATH="/usr/nvidia/lib64:/usr/nvidia/lib64/vdpau:/usr/nvidia/lib64/xorg/modules/drivers:/usr/nvidia/lib64/xorg/modules/extensions:/usr/local/cuda/lib64:/usr/lib64/haswell:/usr/lib64/haswell/pulseaudio:/usr/lib64/haswell/alsa-lib:/usr/lib64/haswell/gstreamer-1.0:/usr/lib64/haswell/pipewire-0.3:/usr/lib64/haswell/spa-0.2:/usr/lib64/dri:/usr/lib64:/usr/lib64/pulseaudio:/usr/lib64/alsa-lib:/usr/lib64/gstreamer-1.0:/usr/lib64/pipewire-0.3:/usr/lib64/spa-0.2:/usr/lib:/aot/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin:/aot/intel/oneapi/compiler/latest/linux/lib:/aot/intel/oneapi/mkl/latest/lib/intel64:/aot/intel/oneapi/tbb/latest/lib/intel64/gcc4.8:/usr/share:/usr/lib64/wine:/usr/nvidia/lib32:/usr/nvidia/lib32/vdpau:/usr/lib32:/usr/lib32/wine"
 export LIBRARY_PATH="/usr/nvidia/lib64:/usr/nvidia/lib64/vdpau:/usr/nvidia/lib64/xorg/modules/drivers:/usr/nvidia/lib64/xorg/modules/extensions:/usr/local/cuda/lib64:/usr/lib64/haswell:/usr/lib64/haswell/pulseaudio:/usr/lib64/haswell/alsa-lib:/usr/lib64/haswell/gstreamer-1.0:/usr/lib64/haswell/pipewire-0.3:/usr/lib64/haswell/spa-0.2:/usr/lib64/dri:/usr/lib64:/usr/lib64/pulseaudio:/usr/lib64/alsa-lib:/usr/lib64/gstreamer-1.0:/usr/lib64/pipewire-0.3:/usr/lib64/spa-0.2:/usr/lib:/aot/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin:/aot/intel/oneapi/compiler/latest/linux/lib:/aot/intel/oneapi/mkl/latest/lib/intel64:/aot/intel/oneapi/tbb/latest/lib/intel64/gcc4.8:/usr/share:/usr/lib64/wine:/usr/nvidia/lib32:/usr/nvidia/lib32/vdpau:/usr/lib32:/usr/lib32/wine"
 ## profile_payload end
@@ -412,7 +445,7 @@ fi
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1639951977
+export SOURCE_DATE_EPOCH=1639952334
 rm -rf %{buildroot}
 pushd clr-build-special
 %make_install_special  || :
@@ -423,3 +456,18 @@ popd
 
 %files
 %defattr(-,root,root,-)
+
+%files dev
+%defattr(-,root,root,-)
+/usr/include/ebur128.h
+/usr/lib64/libebur128.so
+/usr/lib64/pkgconfig/libebur128.pc
+
+%files lib
+%defattr(-,root,root,-)
+/usr/lib64/libebur128.so.1
+/usr/lib64/libebur128.so.1.2.6
+
+%files staticdev
+%defattr(-,root,root,-)
+/usr/lib64/libebur128.a
